@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 const fieldRow int = 8
 const fieldCol int = 8
@@ -17,7 +20,35 @@ func getNewBoard() [fieldRow][fieldCol]string {
 	return board
 }
 
+func drawBoard(board [fieldRow][fieldCol]string) {
+	fmt.Println("   1  2  3  4  5  6  7  8")
+	fmt.Println(" +------------------------+")
+	var rowCount int
+	for _, row := range board {
+		rowCount++
+		fmt.Printf("%v|", rowCount)
+		for _, val := range row {
+			fmt.Print(" ", val, " ")
+		}
+		fmt.Printf("|%v\n", rowCount)
+	}
+	fmt.Println(" +------------------------+")
+	fmt.Println("   1  2  3  4  5  6  7  8")
+}
+
+func playGame(tab [][8]string) {
+
+	tab[3][3] = "X"
+	tab[4][4] = "X"
+	tab[3][4] = "O"
+	tab[4][3] = "O"
+}
+
 func main() {
 	board := getNewBoard()
-	fmt.Println(board)
+	tab := board[:][:]
+	fmt.Println(reflect.TypeOf(tab))
+	playGame(tab)
+	drawBoard(board)
+	fmt.Println(board[2][2])
 }
