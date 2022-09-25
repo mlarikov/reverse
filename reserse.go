@@ -23,14 +23,12 @@ func getNewBoard() [fieldRow][fieldCol]string {
 func drawBoard(board [fieldRow][fieldCol]string) {
 	fmt.Println("   1  2  3  4  5  6  7  8")
 	fmt.Println(" +------------------------+")
-	var rowCount int
-	for _, row := range board {
-		rowCount++
-		fmt.Printf("%v|", rowCount)
+	for i, row := range board {
+		fmt.Printf("%v|", i+1)
 		for _, val := range row {
 			fmt.Print(" ", val, " ")
 		}
-		fmt.Printf("|%v\n", rowCount)
+		fmt.Printf("|%v\n", i+1)
 	}
 	fmt.Println(" +------------------------+")
 	fmt.Println("   1  2  3  4  5  6  7  8")
