@@ -13,7 +13,7 @@ func getNewBoard() [fieldRow][fieldCol]string {
 
 	for row, rowVal := range board {
 		for col, _ := range rowVal {
-			board[row][col] = "X"
+			board[row][col] = " "
 		}
 	}
 	// for row := 0; row < len(board); row++ {
