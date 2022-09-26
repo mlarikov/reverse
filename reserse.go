@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 )
 
 const fieldRow int = 8
@@ -25,7 +24,7 @@ func getNewBoard() [fieldRow][fieldCol]string {
 	return board
 }
 
-func drawBoard(board [fieldRow][fieldCol]string) {
+func drawBoard(board *[fieldRow][fieldCol]string) {
 	fmt.Println("   1 2 3 4 5 6 7 8")
 	fmt.Println(" +-----------------+")
 	for i, row := range board {
@@ -39,19 +38,16 @@ func drawBoard(board [fieldRow][fieldCol]string) {
 	fmt.Println("   1 2 3 4 5 6 7 8")
 }
 
-func playGame(tab [][8]string) {
+func playGame(board *[fieldRow][fieldCol]string) {
 
-	tab[3][3] = "X"
-	tab[4][4] = "X"
-	tab[3][4] = "O"
-	tab[4][3] = "O"
+	board[3][3] = "X"
+	board[4][4] = "X"
+	board[3][4] = "O"
+	board[4][3] = "O"
 }
 
 func main() {
 	board := getNewBoard()
-	tab := board[:][:]
-	fmt.Println(reflect.TypeOf(tab))
-	playGame(tab)
-	drawBoard(board)
-	fmt.Println(board[2][2])
+	playGame(&board)
+	drawBoard(&board)
 }
