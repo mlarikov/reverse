@@ -46,8 +46,29 @@ func playGame(board *[fieldRow][fieldCol]string) {
 	board[4][3] = "O"
 }
 
+// Determine the score by counting the tiles. Return a dictionary
+// with keys 'X' and 'O'.
+func getScoreOfBoard(board [fieldRow][fieldCol]string) map[string]int {
+	var xscore, oscore int
+	for _, rowVal := range board {
+		for _, val := range rowVal {
+			if val == "X" {
+				xscore++
+			}
+			if val == "O" {
+				oscore++
+			}
+
+		}
+	}
+	return map[string]int{"X": xscore, "O": oscore}
+}
+
 func main() {
 	board := getNewBoard()
+
 	playGame(&board)
 	drawBoard(&board)
+	scores := getScoreOfBoard(([8][8]string)(board))
+	fmt.Println(scores)
 }
