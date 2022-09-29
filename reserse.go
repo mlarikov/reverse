@@ -39,12 +39,31 @@ func drawBoard(board *[fieldRow][fieldCol]string) {
 }
 
 func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string {
+
+	// turn := "player"
 	board := getNewBoard()
 	board[3][3] = "X"
 	board[4][4] = "X"
 	board[3][4] = "O"
 	board[4][3] = "O"
-	return board
+	for {
+		playerValidMoves, cellValue := getValidMoves(&board, playerTile)
+		fmt.Println(playerValidMoves, cellValue)
+		return board
+	}
+}
+
+func getValidMoves(board *[fieldRow][fieldCol]string, tile string) ([][2]int, []string) {
+	var validMoves [][2]int
+	var cellValue []string
+	for row, rowVal := range board {
+		for col, val := range rowVal {
+			validMoves = append(validMoves, [2]int{row, col})
+			cellValue = append(cellValue, val)
+		}
+	}
+
+	return validMoves, cellValue
 }
 
 // Determine the score by counting the tiles. Return a dictionary
