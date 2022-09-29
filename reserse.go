@@ -38,12 +38,13 @@ func drawBoard(board *[fieldRow][fieldCol]string) {
 	fmt.Println("   1 2 3 4 5 6 7 8")
 }
 
-func playGame(board *[fieldRow][fieldCol]string) {
-
+func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string {
+	board := getNewBoard()
 	board[3][3] = "X"
 	board[4][4] = "X"
 	board[3][4] = "O"
 	board[4][3] = "O"
+	return board
 }
 
 // Determine the score by counting the tiles. Return a dictionary
@@ -64,11 +65,17 @@ func getScoreOfBoard(board [fieldRow][fieldCol]string) map[string]int {
 	return map[string]int{"X": xscore, "O": oscore}
 }
 
-func main() {
-	board := getNewBoard()
+func enterPlayerTile() (string, string) {
+	return "X", "Y"
+}
 
-	playGame(&board)
-	drawBoard(&board)
-	scores := getScoreOfBoard(([8][8]string)(board))
-	fmt.Println(scores)
+func main() {
+	for {
+		playerTile, computerTile := enterPlayerTile()
+		finalBoard := playGame(playerTile, computerTile)
+		drawBoard(&finalBoard)
+		scores := getScoreOfBoard(finalBoard)
+		fmt.Println(scores)
+		break
+	}
 }
