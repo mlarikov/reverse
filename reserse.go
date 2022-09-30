@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 const fieldRow int = 8
@@ -50,26 +52,55 @@ func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string
 	// Game cicle
 	for {
 		playerValidMoves := getValidMoves(&board, playerTile)
+		fmt.Println(playerTile, playerValidMoves)
+		drawBoard(&board)
 		computerValidMoves := getValidMoves(&board, computerTile)
+		fmt.Println(computerTile, computerValidMoves)
+		drawBoard(&board)
 
-		fmt.Println(playerTile, playerValidMoves, computerTile, computerValidMoves)
 		if playerValidMoves == nil && computerValidMoves == nil {
 			return board
 		} else if turn == "player" {
-			move := getPlayerMove(&board, playerTile)
-			makeMove(&board, playerTile, move)
-			turn = "computer"
+			if playerValidMoves != nil {
+				playerMove := getRandomMove(&board, playerTile)
+				fmt.Println("player", playerTile, playerMove)
+				makeMove(&board, playerTile, playerMove)
+				turn = "computer"
+			}
 		} else if turn == "computer" {
-			move := getPlayerMove(&board, computerTile)
-			makeMove(&board, computerTile, move)
-			turn = "player"
+			if computerValidMoves != nil {
+				comupterMove := getRandomMove(&board, computerTile)
+				fmt.Println("computer", computerTile, comupterMove)
+				makeMove(&board, computerTile, comupterMove)
+				turn = "player"
+			}
 		}
 
 	}
 }
 
-func makeMove(board *[fieldRow][fieldCol]string, tile string, move [2]int) {
-	panic("unimplemented")
+// Return the move that flips the least number of tiles.
+func getRandomMove(board *[fieldRow][fieldCol]string, tile string) [2]int {
+	possibleMoves := getValidMoves(board, tile)
+	rand.Seed(time.Now().UnixMicro())
+	return possibleMoves[rand.Intn(len(possibleMoves))]
+}
+
+// Place the tile on the boardat xstart, ystart and flip
+// any if opponent's pieces.
+// Return False if this is an invalid move; True if it is valid.
+func makeMove(board *[fieldRow][fieldCol]string, tile string, move [2]int) bool {
+	tilesToFlip := calcValidMoves(board, tile, move[0], move[1])
+	if tilesToFlip == nil {
+		return false
+	}
+	board[move[0]][move[1]] = tile
+	for cell := range tilesToFlip {
+		row := tilesToFlip[cell][0]
+		col := tilesToFlip[cell][1]
+		board[row][col] = tile
+	}
+	return true
 }
 
 func getPlayerMove(board *[fieldRow][fieldCol]string, tile string) [2]int {
@@ -83,7 +114,7 @@ func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	// var cellValue []string
 	for row, rowVal := range board {
 		for col := range rowVal {
-			tilesToFlip := calcValidMoves(*board, tile, row, col)
+			tilesToFlip := calcValidMoves(board, tile, row, col)
 			if tilesToFlip != nil {
 				validMoves = append(validMoves, [2]int{row, col})
 			}
@@ -94,7 +125,7 @@ func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	return validMoves
 }
 
-func calcValidMoves(board [fieldRow][fieldCol]string, tile string, startRow, startCol int) [][2]int {
+func calcValidMoves(board *[fieldRow][fieldCol]string, tile string, startRow, startCol int) [][2]int {
 	var tilesToFlip [][2]int
 
 	if board[startRow][startCol] != " " || !isOnBoard(startRow, startCol) {
