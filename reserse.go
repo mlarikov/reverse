@@ -47,23 +47,30 @@ func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string
 	board[3][4] = "O"
 	board[4][3] = "O"
 	for {
-		playerValidMoves, cellValue := getValidMoves(&board, playerTile)
-		fmt.Println(playerValidMoves, cellValue)
+		playerValidMoves := getValidMoves(&board, playerTile)
+		fmt.Println(playerValidMoves)
 		return board
 	}
 }
 
-func getValidMoves(board *[fieldRow][fieldCol]string, tile string) ([][2]int, []string) {
+func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	var validMoves [][2]int
-	var cellValue []string
+	// var cellValue []string
 	for row, rowVal := range board {
-		for col, val := range rowVal {
-			validMoves = append(validMoves, [2]int{row, col})
-			cellValue = append(cellValue, val)
+		for col, _ := range rowVal {
+			if isValidMove(board, tile, row, col) {
+				validMoves = append(validMoves, [2]int{row, col})
+			}
+			// validMoves = append(validMoves, [2]int{row, col})
+			// cellValue = append(cellValue, val)
 		}
 	}
 
-	return validMoves, cellValue
+	return validMoves
+}
+
+func isValidMove(string *[fieldRow][fieldCol]string, tile string, row, col int) bool {
+	return true
 }
 
 // Determine the score by counting the tiles. Return a dictionary
