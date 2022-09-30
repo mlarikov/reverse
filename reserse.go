@@ -39,20 +39,45 @@ func drawBoard(board *[fieldRow][fieldCol]string) {
 }
 
 func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string {
-
-	// turn := "player"
+	//init game
+	turn := "player"
 	board := getNewBoard()
 	board[3][3] = "X"
 	board[4][4] = "X"
 	board[3][4] = "O"
 	board[4][3] = "O"
+
+	// Game cicle
 	for {
 		playerValidMoves := getValidMoves(&board, playerTile)
-		fmt.Println(playerValidMoves)
-		return board
+		computerValidMoves := getValidMoves(&board, computerTile)
+
+		fmt.Println(playerTile, playerValidMoves, computerTile, computerValidMoves)
+		if playerValidMoves == nil && computerValidMoves == nil {
+			return board
+		} else if turn == "player" {
+			move := getPlayerMove(&board, playerTile)
+			makeMove(&board, playerTile, move)
+			turn = "computer"
+		} else if turn == "computer" {
+			move := getPlayerMove(&board, computerTile)
+			makeMove(&board, computerTile, move)
+			turn = "player"
+		}
+
 	}
 }
 
+func makeMove(board *[fieldRow][fieldCol]string, tile string, move [2]int) {
+	panic("unimplemented")
+}
+
+func getPlayerMove(board *[fieldRow][fieldCol]string, tile string) [2]int {
+	panic("unimplemented")
+}
+
+// Return a list of [x, y] lists of validmoves
+// for the given player on the board.
 func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	var validMoves [][2]int
 	// var cellValue []string
@@ -66,7 +91,6 @@ func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 			// cellValue = append(cellValue, val)
 		}
 	}
-
 	return validMoves
 }
 
@@ -137,7 +161,7 @@ func getScoreOfBoard(board [fieldRow][fieldCol]string) map[string]int {
 }
 
 func enterPlayerTile() (string, string) {
-	return "X", "Y"
+	return "X", "O"
 }
 
 func main() {
