@@ -11,7 +11,7 @@ func getNewBoard() [fieldRow][fieldCol]string {
 	var board [fieldRow][fieldCol]string
 
 	for row, rowVal := range board {
-		for col, _ := range rowVal {
+		for col := range rowVal {
 			board[row][col] = " "
 		}
 	}
@@ -57,8 +57,8 @@ func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	var validMoves [][2]int
 	// var cellValue []string
 	for row, rowVal := range board {
-		for col, _ := range rowVal {
-			tilesToFlip := calcValidMove(*board, tile, row, col)
+		for col := range rowVal {
+			tilesToFlip := calcValidMoves(*board, tile, row, col)
 			if tilesToFlip != nil {
 				validMoves = append(validMoves, [2]int{row, col})
 			}
@@ -70,7 +70,7 @@ func getValidMoves(board *[fieldRow][fieldCol]string, tile string) [][2]int {
 	return validMoves
 }
 
-func calcValidMove(board [fieldRow][fieldCol]string, tile string, startRow, startCol int) [][2]int {
+func calcValidMoves(board [fieldRow][fieldCol]string, tile string, startRow, startCol int) [][2]int {
 	var tilesToFlip [][2]int
 
 	if board[startRow][startCol] != " " || !isOnBoard(startRow, startCol) {
