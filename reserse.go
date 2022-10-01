@@ -27,17 +27,17 @@ func getNewBoard() [fieldRow][fieldCol]string {
 }
 
 func drawBoard(board *[fieldRow][fieldCol]string) {
-	fmt.Println("   1 2 3 4 5 6 7 8")
+	fmt.Println("   0 1 2 3 4 5 6 7")
 	fmt.Println(" +-----------------+")
 	for i, row := range board {
-		fmt.Printf("%v| ", i+1)
+		fmt.Printf("%v| ", i)
 		for _, val := range row {
 			fmt.Printf("%v ", val)
 		}
-		fmt.Printf("|%v\n", i+1)
+		fmt.Printf("|%v\n", i)
 	}
 	fmt.Println(" +-----------------+")
-	fmt.Println("   1 2 3 4 5 6 7 8")
+	fmt.Println("   0 1 2 3 4 5 6 7")
 }
 
 func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string {
@@ -48,35 +48,47 @@ func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string
 	board[4][4] = "X"
 	board[3][4] = "O"
 	board[4][3] = "O"
+	// getTestBoard(&board)
 
 	// Game cicle
 	for {
 		playerValidMoves := getValidMoves(&board, playerTile)
-		fmt.Println(playerTile, playerValidMoves)
-		drawBoard(&board)
+		// fmt.Println(playerTile, playerValidMoves)
+		// drawBoard(&board)
 		computerValidMoves := getValidMoves(&board, computerTile)
-		fmt.Println(computerTile, computerValidMoves)
-		drawBoard(&board)
+		// fmt.Println(computerTile, computerValidMoves)
+		// drawBoard(&board)
 
 		if playerValidMoves == nil && computerValidMoves == nil {
 			return board
 		} else if turn == "player" {
 			if playerValidMoves != nil {
 				playerMove := getRandomMove(&board, playerTile)
-				fmt.Println("player", playerTile, playerMove)
+				// fmt.Println("player", playerTile, playerMove)
 				makeMove(&board, playerTile, playerMove)
-				turn = "computer"
 			}
+			turn = "computer"
 		} else if turn == "computer" {
 			if computerValidMoves != nil {
 				comupterMove := getRandomMove(&board, computerTile)
-				fmt.Println("computer", computerTile, comupterMove)
+				// fmt.Println("computer", computerTile, comupterMove)
 				makeMove(&board, computerTile, comupterMove)
-				turn = "player"
 			}
+			turn = "player"
 		}
 
 	}
+}
+
+func getTestBoard(board *[8][8]string) {
+	board[0] = [8]string{"O", "X", "X", "X", "X", "X", "X", "X"}
+	board[1] = [8]string{"O", "X", "X", "O", "O", " ", "X", "X"}
+	board[2] = [8]string{"O", "X", "X", "X", "O", "O", "O", "X"}
+	board[3] = [8]string{"O", "X", "O", "O", "X", "O", "O", "X"}
+	board[4] = [8]string{"O", "X", "X", "O", "O", "O", "O", "O"}
+	board[5] = [8]string{"O", "O", "X", "X", "O", "O", "O", "O"}
+	board[6] = [8]string{"O", "O", "O", "O", "X", "O", "X", "X"}
+	board[7] = [8]string{"X", "X", "X", "X", "X", "X", "X", "O"}
 }
 
 // Return the move that flips the least number of tiles.
@@ -197,7 +209,8 @@ func enterPlayerTile() (string, string) {
 
 func main() {
 	for {
-		playerTile, computerTile := enterPlayerTile()
+		// playerTile, computerTile := enterPlayerTile()
+		computerTile, playerTile := enterPlayerTile()
 		finalBoard := playGame(playerTile, computerTile)
 		drawBoard(&finalBoard)
 		scores := getScoreOfBoard(finalBoard)
