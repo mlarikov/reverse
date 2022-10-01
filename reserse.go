@@ -63,7 +63,7 @@ func playGame(playerTile string, computerTile string) [fieldRow][fieldCol]string
 			return board
 		} else if turn == "player" {
 			if playerValidMoves != nil {
-				playerMove := getRandomMove(&board, playerTile)
+				playerMove := getPlayerMove(&board, playerTile)
 				// fmt.Println("player", playerTile, playerMove)
 				makeMove(&board, playerTile, playerMove)
 			}
@@ -115,8 +115,16 @@ func makeMove(board *[fieldRow][fieldCol]string, tile string, move [2]int) bool 
 	return true
 }
 
+// Let the player enter their move
+// Return the move as [row, col]
 func getPlayerMove(board *[fieldRow][fieldCol]string, tile string) [2]int {
-	panic("unimplemented")
+	var cell [2]int
+	drawBoard(board)
+	fmt.Printf("Ваш ход сударь: %v \n", tile)
+	fmt.Scan(&cell[0])
+	fmt.Scan(&cell[1])
+	fmt.Println(cell)
+	return cell
 }
 
 // Return a list of [x, y] lists of validmoves
