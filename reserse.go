@@ -120,10 +120,17 @@ func makeMove(board *[fieldRow][fieldCol]string, tile string, move [2]int) bool 
 func getPlayerMove(board *[fieldRow][fieldCol]string, tile string) [2]int {
 	var cell [2]int
 	drawBoard(board)
-	fmt.Printf("Ваш ход сударь: %v \n", tile)
-	fmt.Scan(&cell[0])
-	fmt.Scan(&cell[1])
-	fmt.Println(cell)
+	for {
+		fmt.Printf("Ваш ход сударь: %v \n", tile)
+		fmt.Scan(&cell[0], &cell[1])
+		fmt.Println(cell)
+		if calcValidMoves(board, tile, cell[0], cell[1]) != nil {
+			break
+		}
+		if getValidMoves(board, tile) == nil {
+			break
+		}
+	}
 	return cell
 }
 
